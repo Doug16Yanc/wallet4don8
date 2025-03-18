@@ -20,8 +20,22 @@ class DonationService:
         cause = CauseService.find_cause_by_name(db, donation.cause_name)
         if not cause:
             raise DonationNotCause()
+        
+        donation_in_brl = DonationService.convert_ether_in_brl(donation.value)
 
+        cause.amount += donation_in_brl
+        db.commit()
+        
         return DonationRepository.create_donation(db, donation)
+    
+    @staticmethod
+    def find_donation_by_id(db: Session, id : int):
+        donation = DonationRepository.find_donation_by_id(db, id)
+
+        if not donation:
+            raise DonationNotFound()
+        
+        return donation
 
     @staticmethod
     def get_all_donations(db: Session):
@@ -35,9 +49,13 @@ class DonationService:
 
     @staticmethod
     def delete_donation_by_id(db: Session, id : int):
-        donation_found = DonationRepository.find_donation_by_id(db, id)
+        donation_found = DonationService.find_donation_by_id(db, id)
 
         if not donation_found:
             raise DonationNotFound()
         
         return DonationRepository.delete_donation_by_id(db, id)
+    
+    @staticmethod
+    def convert_ether_in_brl(value : float):
+        return value * 10799.18
