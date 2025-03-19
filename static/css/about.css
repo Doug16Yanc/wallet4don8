@@ -1,0 +1,39 @@
+.row {
+    flex-direction: row;
+    display: flex;
+    padding : 10px;
+    gap: 1px;
+}
+
+.row .image {
+    margin-top: 20px;
+    width: 50%; 
+    display: flex;
+    justify-content: center; 
+}
+
+.row .image img {
+    max-width: 100%; 
+    height: auto;
+    border-radius: 10px; 
+}
+
+.row .texts {
+    margin-top: 20px;
+    width: 50%;
+    flex-direction: column;
+    color : var(--color-1);
+    gap: 10px;
+}
+
+.row .texts .title {
+    justify-content: center;
+    text-align: center;
+    font-weight: bold;
+    font-size: 40px;
+}
+
+font .texts .introduction {
+    font-weight: bold;
+    font-size: 25px;   
+}
