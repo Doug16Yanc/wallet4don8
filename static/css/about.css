@@ -26,12 +26,12 @@
 .row .texts .title {
     text-align: center;
     font-weight: bold;
-    font-size: 40px;
+    font-size: 30px;
 }
 
 .row .texts .introduction {
     margin-top: 30px;
     align-items: center;
     justify-content: center;
-    font-size: 23px;   
+    font-size: 20px;   
 }

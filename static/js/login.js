@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("reset_password").addEventListener("click", function () {
-        window.location.href = "reset_password.html";
+        window.location.href = "reset_user.html";
     });
 });
 

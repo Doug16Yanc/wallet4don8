@@ -1,0 +1,59 @@
+
+.dashboard {
+    margin-top: 40px;
+    text-align: center;
+    padding: 20px;
+}
+
+.dashboard h1 {
+    color: var(--color-1);
+}
+
+.cards {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+
+.card {
+    background: var(--color-2);
+    border: 1px solid var(--color-4);
+    padding: 20px;
+    border-radius: 10px;
+    width: 200px;
+    text-align: center;
+    color: var(--color-1);
+}
+
+.value {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--color-4);
+}
+
+.charts {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 40px;
+    
+}
+
+.chart-container {
+    height: 380px;
+}
+
+.chart-container, .map-container {
+    background: var(--color-2);
+    color: var(--color-1);
+    border: 1px solid var(--color-4);
+    padding: 20px;
+    border-radius: 10px;
+    width: 45%;
+}
+
+#map {
+    height: 300px;
+    border-radius: 10px;
+}
