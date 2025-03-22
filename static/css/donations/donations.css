@@ -47,3 +47,24 @@ section .img img {
     display: flex;
     margin-top: 20px;
 }
+
+@media screen and (max-width: 900px) {
+    section {
+        margin-top: 30px;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    section .content, 
+    section .img {
+        width: 100%; 
+    }
+
+    section .img img {
+        max-width: 80%; 
+    }
+
+    .title-box-container {
+        margin-top: 30px;
+    }
+}

@@ -41,7 +41,7 @@
 }
 
 .chart-container {
-    height: 380px;
+    height: 470px;
 }
 
 .chart-container, .map-container {
@@ -56,4 +56,30 @@
 #map {
     height: 300px;
     border-radius: 10px;
+}
+
+@media screen and (max-width: 900px) {
+    .cards {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .card {
+        width: 90%;
+        margin-top: 20px;
+    }
+
+    .charts {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .chart-container {
+        margin-top: 20px;
+    }
+
+    .chart-container, .map-container {
+        width: 90%; 
+        margin-top: 20px;
+    }
 }

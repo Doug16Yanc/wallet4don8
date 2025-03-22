@@ -91,4 +91,8 @@ input {
     background-color: var(--color-4);
 }
 
-
+@media screen and (max-width: 900px) {
+    .container {
+        width: 530px;
+    }
+}

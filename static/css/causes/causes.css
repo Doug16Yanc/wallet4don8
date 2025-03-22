@@ -27,7 +27,7 @@ section .content h1{
 
 section .content p{
     font-size : 22px;
-    margin-top: 4px;
+    margin-top: 10px;
 }
 
 section .img img {
@@ -46,4 +46,25 @@ section .img img {
 .box-container {
     display: flex;
     margin-top: 20px;
+}
+
+@media screen and (max-width: 900px) {
+    section {
+        margin-top: 30px;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    section .content, 
+    section .img {
+        width: 100%; 
+    }
+
+    section .img img {
+        max-width: 80%; 
+    }
+
+    .title-box-container {
+        margin-top: 30px;
+    }
 }

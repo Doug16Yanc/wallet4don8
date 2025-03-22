@@ -91,14 +91,12 @@ input {
     background-color: var(--color-4);
 }
 
-.create {
-    margin-top: 20px;
-    justify-content: center;
-    align-items: center;
-    color: var(--color-1);
-    font-size: 22px;    
-}
-
 .button button:hover {
     background-color: var(--color-4);
+}
+
+@media screen and (max-width: 900px) {
+    .container {
+        width: 530px;
+    }
 }

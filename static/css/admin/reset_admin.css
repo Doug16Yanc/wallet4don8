@@ -13,7 +13,7 @@
     width: fit-content; 
     border-radius: 10px; 
     width: 50%;
-    height: 1200px;
+    height: 500px;
 }
 
 .text-login {
@@ -62,13 +62,13 @@ input {
     font-size: 22px;
 }
 
-.create {
+.reset {
     color: var(--color-1);
     font-size: 22px;
     padding-left: 290px;
 }
 
-.button-create {
+.button-reset {
     justify-content: center;
     align-items: center;
 }
@@ -91,15 +91,8 @@ input {
     background-color: var(--color-4);
 }
 
-
-.login {
-    margin-top: 20px;
-    justify-content: center;
-    align-items: center;
-    color: var(--color-1);
-    font-size: 22px;    
-}
-
-.button button:hover {
-    background-color: var(--color-4);
+@media screen and (max-width: 900px) {
+    .container {
+        width: 530px;
+    }
 }
