@@ -1,61 +1,54 @@
-from sqlalchemy.orm import Session
-from repositories.cause_repository import CauseRepository
-import schemas
-from exceptions.cause_exceptions import (
-    CauseAlreadyExists, 
-    CausesListEmpty, 
-    CauseNotFound, 
-    CauseAmountEmpty, 
-    CauseDeletionException)
-
+from app.repositories.cause_repository import CauseRepository
+from app.schemas import cause_schema
+from app.exceptions.cause_exceptions import (
+    cause_already_exists,
+    causes_list_empty,
+    cause_not_found,
+    cause_amount_empty,
+    cause_deletion_exception
+)
 
 class CauseService:
 
-    @staticmethod
-    def create_cause(db : Session, cause : schemas.CauseCreate):
+    def __init__(self, repository: CauseRepository):
+        self.repository = repository
 
-        existing_cause = CauseService.find_cause_by_name(db, cause.cause_name)
+    def create_cause(self, cause: cause_schema.CauseCreate):
+        existing_cause = self.find_cause_by_name(cause.cause_name)
 
         if existing_cause:
-            raise CauseAlreadyExists()
+            raise cause_already_exists.CauseAlreadyExists()
 
-        return CauseRepository.create_cause(db, cause)
+        return self.repository.create_cause(cause)
 
-    
-    @staticmethod
-    def find_cause_by_name(db : Session, name : str):
-      cause_found = CauseRepository.find_cause_by_name(db, name)
+    def find_cause_by_name(self, name: str):
+        cause_found = self.repository.find_cause_by_name(name)
 
-      if not cause_found:
-          raise CauseNotFound()
-      
-      return cause_found
+        if not cause_found:
+            raise cause_not_found.CauseNotFound()
 
-    @staticmethod
-    def find_all_causes(db : Session):
-        causes = CauseRepository.find_all_causes(db)
+        return cause_found
+
+    def find_all_causes(self):
+        causes = self.repository.find_all_causes()
 
         if not causes:
-            raise CausesListEmpty()
-        
+            raise causes_list_empty.CausesListEmpty()
+
         return causes
-    
-    @staticmethod
-    def update_cause_by_name(db : Session, name : str, new_amount : float):
-        
-        cause = CauseService.find_cause_by_name(db, name)
+
+    def update_cause_by_name(self, name: str, new_amount: float):
+        cause = self.find_cause_by_name(name)
 
         if cause.amount == 0.0:
-            raise CauseAmountEmpty()
-        
-        return CauseRepository.update_cause_by_name(db, name, new_amount)
+            raise cause_amount_empty.CauseAmountEmpty()
 
-    @staticmethod
-    def delete_cause_by_name(db : Session, name : str):
-        
-        cause = CauseService.find_cause_by_name(db, name)
+        return self.repository.update_cause_by_name(name, new_amount)
+
+    def delete_cause_by_name(self, name: str):
+        cause = self.find_cause_by_name(name)
 
         if cause.status_amount == "stored":
-            raise CauseDeletionException()
-        
-        return CauseRepository.delete_cause_by_name(db, name)
+            raise cause_deletion_exception.CauseDeletionException()
+
+        return self.repository.delete_cause_by_name(name)

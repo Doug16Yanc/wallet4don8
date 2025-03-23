@@ -1,15 +1,16 @@
-from sqlalchemy.orm import Session
-from app.repositories import UserRepository
-from app import schemas
-from app.exceptions import UserAlreadyExists
+from app.repositories.user_repository import UserRepository
+from app.schemas import user_schema
+from app.exceptions.user_exceptions import user_already_exists
 
 class UserService:
+    def __init__(self, repository: UserRepository):
+        self.repository = repository
 
-    @staticmethod
-    def create_user(db : Session, user: schemas.UserCreate):
-        existing_user = UserRepository.find_user_by_email(db, user)
+    def create_user(self, user: user_schema.UserCreate):
+        existing_user = self.repository.find_user_by_email(user.email)
 
         if existing_user:
-            raise UserAlreadyExists()
-        return UserRepository.create_user(db, user)
-    
+            raise user_already_exists.UserAlreadyExists()
+        
+        return self.repository.create_user(user)
+

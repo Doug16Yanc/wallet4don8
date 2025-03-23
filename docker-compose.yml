@@ -2,7 +2,7 @@ services:
   postgres:
     image: postgres
     networks:
-      - fastapi_net
+      - wallet_net
     container_name: postgres
     ports:
       - '5432:5432'
@@ -19,11 +19,11 @@ services:
 
   app:
     networks:
-      - fastapi_net
+      - wallet_net
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: fastapi_api
+    container_name: wallet_api
     ports:
       - '8000:8000'
     restart: always
@@ -37,5 +37,5 @@ volumes:
   postgres-db:
 
 networks:
-  fastapi_net:
+  wallet_net:
     driver: bridge

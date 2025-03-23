@@ -1,22 +1,28 @@
 from sqlalchemy.orm import Session
-from app import models, schemas
-import bcrypt 
+from app.schemas import user_schema
+from app.models.user import User
+import bcrypt
 
 class UserRepository:
 
-    @staticmethod
-    def create_user(db: Session, user: schemas.UserCreate):
-        hashed_password = bcrypt.hash(user.password)
-        db_user = models.User(name=user.name, email=user.email, password=hashed_password)
-        db.add(db_user)
-        db.commit()
-        db.refresh(db_user)
-        return db_user
+    def __init__(self, db: Session):
+        self.db = db
 
-    @staticmethod
-    def find_user_by_email(db: Session, email: str):
-        return db.query(models.User).filter(models.User.email == email).first()
+    def create(self, user: user_schema.UserCreate):
+        try:
+            hashed_password = bcrypt.hashpw(user.password.encode('utf-8'), bcrypt.gensalt())
+            db_user = User(name=user.name, email=user.email, password=hashed_password.decode('utf-8'))
+            self.db.add(db_user)
+            self.db.commit()
+            self.db.refresh(db_user)
+            return user_schema.UserResponse.from_orm(db_user)
+        except Exception as e:
+            self.db.rollback()
+            raise e
 
-    @staticmethod
-    def get_users(db: Session):
-        return db.query(models.User).all()
+    def get_by_email(self, email: str):
+        return self.db.query(User).filter(User.email == email).first()
+
+    def get_all(self):
+        db_users = self.db.query(User).all()
+        return [user_schema.UserResponse.from_orm(user) for user in db_users]

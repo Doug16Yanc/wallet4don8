@@ -1,7 +1,7 @@
-from database import Base
+from database.database import Base
 from sqlalchemy import Column, Integer, Float, ForeignKey, String, LargeBinary
 from sqlalchemy.orm import relationship
-from status_amount import Status_Amount
+from . status_amount import Status_Amount
 
 class Cause(Base):
     __tablename__ = 'causes'

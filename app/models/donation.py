@@ -1,5 +1,6 @@
-from database import Base
-from sqlalchemy import Column, Integer, String, Float
+from database.database import Base
+from sqlalchemy import Column, Integer, String, Float, ForeignKey
+from sqlalchemy.orm import relationship
 
 class Donation(Base) :
     __tablename__ = 'donations'

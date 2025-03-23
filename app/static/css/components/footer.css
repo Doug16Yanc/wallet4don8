@@ -2,6 +2,7 @@ footer {
   background: var(--color-6);
   color: #fff;
   padding: 2em 0;
+  font-size: 1.0em;
 }
 
 footer ul {
@@ -12,10 +13,11 @@ footer ul {
 footer a {
   color: #fff;
   text-decoration: none;
+  font-size: 0.8em;
 }
 
 .footer .container {
-  max-width: 1200px;
+  max-width: 1600px;
   margin: auto;
   display: flex;
   justify-content: space-between;
@@ -26,16 +28,18 @@ footer a {
 .col1, .col2, .col3 {
   flex: 1;
   min-width: 250px;
+  font-size: 1.0em;
 }
 
 .col1 .text {
   padding-left: 40px;
-  font-size: 1.2em;
+  font-size: 1.5em;
   margin-bottom: 0.8em;
 }
 
 .col3 p {
   text-align: center;
+  font-size: 1.5em;
 }
 
 .media-icons li,
@@ -46,7 +50,7 @@ footer a {
 }
 
 .media-icons a {
-  font-size: 1.1em;
+  font-size: 2.2em;
   width: 2em;
   height: 2em;
   border-radius: 50%;
@@ -62,13 +66,14 @@ footer a {
 }
 
 .services-icons {
+  font-size: 1.0em;
   margin-top: 10px;
   padding-left: 30px;
 }
 
 .services-icons a {
   margin-top: 20px;
-  font-size: 1.6em;
+  font-size: 1.0em;
   transition: 0.3s;
 }
 
@@ -79,12 +84,13 @@ footer a {
 .input-wrap {
   padding-left: 40px;
   display: flex;
-  margin-top: 1em;
+  margin-top: 0.8em;
 }
 
 .input-wrap input {
   flex: 1;
   padding: 0.5em;
+  font-size: 0.8em;
   border: none;
   border-radius: 10px;
   background: var(--color-1);
@@ -97,6 +103,7 @@ footer a {
 
 .input-wrap button {
   gap: 10px;
+  font-size: 1.4em;
   padding: 0.8em;
   border-radius: 10px;
   background: var(--color-4);
@@ -112,7 +119,8 @@ footer a {
 }
 
 .footer-bottom {
-  padding: 1.5em 0;
+  padding: 2.5em 0;
+  font-size: 1.5em;
   padding-left: 650px;
 }
 

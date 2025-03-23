@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/css/style.css">
-    <link rel="stylesheet" href="../static/css/about.css">
-    <link rel="stylesheet" href="../static/css/footer.css">
+    <link rel="stylesheet" href="../static/css/components/about.css">
+    <link rel="stylesheet" href="../static/css/components/footer.css">
     <script src="../static/js/script.js"></script>
     <script src="../static/js/login.js"></script>
     <script src="../static/js/links.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
-    <!-- == icon == -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
     <title>Wallet4Don8</title>
 </head>
@@ -21,7 +20,11 @@
         <nav>
             <img src="../static/images/icon.png" alt="" width="150">
             <div class="button">
-                 <button id="login">Entrar</button>
+              <button class="login-button index-login-btn" id="login">Entrar</button> 
+              <div class="dropdown-content" id="dropdown-menu">
+                <a href="#">Login como administrador</a>
+                <a href="#">Login como doador</a>
+             </div>
             </div>
         </nav>
         <div class ="home" id = "home">
@@ -84,7 +87,7 @@
           <p>Converse com nossos administradores</p>
           <form>
             <div class="input-wrap">
-              <input type="email" placeholder="seuemail@gmail.com" />
+              <input type="email" placeholder="douglas@gmail.com" />
               <button type="submit"><i class="fa-solid fa-paper-plane"></i></button>
             </div>
           </form>

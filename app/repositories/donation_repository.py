@@ -1,30 +1,43 @@
 from sqlalchemy.orm import Session
-from app import models, schemas
-from app.models import Donation
+from app.schemas import donation_schema
+from app.models.donation import Donation
 
 class DonationRepository:
 
-    @staticmethod
-    def create_donation(db : Session, donation : schemas.DonationCreate):
-        new_donation = models.Donation(
-            address_account = donation.address_account,
-            value = donation.value,
-            fk_cause = donation.fk_cause,
-            fk_user = donation.fk_user
-        )
-        db.add(new_donation)
-        db.commit()
-        db.refresh()
+    def __init__(self, db: Session):
+        self.db = db
 
-    @staticmethod
-    def find_donation_by_id(db : Session, id : int):
-        return db.query(models.Donation).filter(Donation.id == id).first()
+    def create(self, donation: donation_schema.DonationCreate):
+        try:
+            new_donation = Donation(
+                address_account=donation.address_account,
+                value=donation.value,
+                fk_cause=donation.fk_cause,
+                fk_user=donation.fk_user
+            )
+            self.db.add(new_donation)
+            self.db.commit()
+            self.db.refresh(new_donation)
+            return donation_schema.DonationResponse.from_orm(new_donation)
+        except Exception as e:
+            self.db.rollback()
+            raise e
 
-    @staticmethod
-    def find_all_donations(db : Session):
-        return db.query(models.Donation).all()
+    def get_by_id(self, id: int):
+        return self.db.query(Donation).filter(Donation.id == id).first()
 
+    def get_all(self):
+        donations = self.db.query(Donation).all()
+        return [donation_schema.DonationResponse.from_orm(donation) for donation in donations]
 
-    @staticmethod
-    def delete_donation_by_id(db : Session, id : int):
-        return db.query(models.Donation).filter(Donation.id == id).delete()
+    def delete(self, id: int):
+        try:
+            donation = self.db.query(Donation).filter(Donation.id == id).first()
+            if donation:
+                self.db.delete(donation)
+                self.db.commit()
+                return donation_schema.DonationResponse.from_orm(donation)
+            return None
+        except Exception as e:
+            self.db.rollback()
+            raise e
