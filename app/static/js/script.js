@@ -1,28 +1,26 @@
 document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("login").addEventListener("click", function () {
-        var userType = document.getElementById("user-type").value;
-        if (userType === "admin") {
-            window.location.href = "/login_admin";  
-        } else {
-            window.location.href = "/login_user";   
+    const loginButton = document.getElementById("login");
+    const dropdown = document.getElementById("dropdown-content");
+    const adminLogin = document.getElementById("admin-login");
+    const userLogin = document.getElementById("user-login");
+
+    loginButton.addEventListener("click", function (event) {
+        event.stopPropagation(); 
+        dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+    });
+
+    adminLogin.addEventListener("click", function () {
+        window.location.href = "/login_admin";
+    });
+
+    userLogin.addEventListener("click", function () {
+        window.location.href = "/login_user";
+    });
+
+    window.addEventListener("click", function (event) {
+        if (!loginButton.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.style.display = "none";
         }
     });
 });
 
-document.getElementById("login").addEventListener("click", function() {
-    var dropdown = document.getElementById("dropdown-content");
-    if (dropdown.style.display === "block") {
-        dropdown.style.display = "none";
-    } else {
-        dropdown.style.display = "block";
-    }
-});
-
-window.addEventListener("click", function(event) {
-    if (!event.target.matches('login')) {
-        var dropdown = document.getElementById("dropdown-content");
-        if (dropdown.style.display === "block") {
-            dropdown.style.display = "none";
-        }
-    }
-});

@@ -1,0 +1,37 @@
+.redirectButton
+{
+    position: fixed;
+    width: 20%;
+    top: 92%;
+    left: 84%;
+    z-index: 999;
+    padding: 1vh;
+}
+
+.redirBtn
+{
+    color: #fff;
+    padding: .8vh 3vh;
+    border-radius: 1vh;
+    font-size: max(15px, 1vh);
+    cursor: pointer;
+    box-shadow: 1vh 1vh 4vh #000000;
+}
+
+.redirBtn:hover
+{
+    opacity: .7;
+}
+
+.prev
+{
+    border-radius: 10vh 0vh 0vh 10vh;
+    background: linear-gradient(90deg, #071a81, #000000);
+
+}
+
+.next
+{
+    background: linear-gradient(90deg, #000203 , #071a81);
+    border-radius: 0vh 10vh 10vh 0vh;
+}

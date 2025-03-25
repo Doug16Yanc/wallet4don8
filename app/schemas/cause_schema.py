@@ -3,15 +3,14 @@ from pydantic import BaseModel
 from enum import Enum
 
 class CauseResponse(BaseModel):
-    cause_id: Optional[int] = None  
     cause_name: str
     description: str
     certification_code: str
     amount: float
     status_amount: str
-    img_url: str
-    fk_user_id: int
-
+    img_data: Optional[bytes] 
+    fk_user_id: int  
+    
     class Config:
         from_attributes = True  
         allow_population_by_field_name = True
@@ -25,14 +24,13 @@ class ListCauseResponse(BaseModel):
 
 
 class CauseCreate(BaseModel):
-    cause_id: int
     cause_name: str
     description: str
     certification_code: str
     amount: float
     status_amount: str
     fk_user: int
-    image_data: Optional[str] = None
+    image_data: Optional[bytes] = None
 
     class Config:
         from_attributes = True  

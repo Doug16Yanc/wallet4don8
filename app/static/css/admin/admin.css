@@ -1,0 +1,7 @@
+.title-box-container {
+    margin-top: 30px;
+    font-size: 40px;
+    font-weight: bold;
+    color: var(--color-1);
+    text-align: center;
+}

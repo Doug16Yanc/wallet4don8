@@ -7,7 +7,7 @@ class DonationRepository:
     def __init__(self, db: Session):
         self.db = db
 
-    def create(self, donation: donation_schema.DonationCreate):
+    def create_donation(self, donation: donation_schema.DonationCreate):
         try:
             new_donation = Donation(
                 address_account=donation.address_account,
@@ -23,14 +23,23 @@ class DonationRepository:
             self.db.rollback()
             raise e
 
-    def get_by_id(self, id: int):
+    def find_donation_by_id(self, id: int):
         return self.db.query(Donation).filter(Donation.id == id).first()
+    
+    def update_donation(self, id : int, new_amount : float): 
 
-    def get_all(self):
+        donation = self.db.query(Donation).filter(Donation.id == id).first()
+        donation.value = new_amount
+        self.db.commit()
+        self.db.refresh(donation)
+        
+        return donation
+
+    def find_all_donations(self):
         donations = self.db.query(Donation).all()
         return [donation_schema.DonationResponse.from_orm(donation) for donation in donations]
 
-    def delete(self, id: int):
+    def delete_donation(self, id: int):
         try:
             donation = self.db.query(Donation).filter(Donation.id == id).first()
             if donation:

@@ -4,7 +4,7 @@ from pydantic import BaseModel
 class UserResponse(BaseModel):
     user_name: str
     user_email: str
-    user_password: str  
+    is_admin : bool
     
     class Config:
         from_attributes = True  
@@ -17,15 +17,16 @@ class ListUserResponse(BaseModel):
     users: List[UserResponse]
 
 class UserCreate(BaseModel):
-    user_id: int
     user_name: str
     user_email: str
     user_password: str  
+    is_admin : bool
 
     class Config:
         from_attributes = True  
 
 class UserUpdate(BaseModel):
+    user_email : str
     user_password: str
 
     class Config:

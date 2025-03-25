@@ -19,6 +19,9 @@ html{
     --color-4: #F84C0D;
     --color-5: #df0d0d;
     --color-6: #0f0d0d;
+    --color-7: #1ee10a;
+    --color-8: #FB7A09;
+    --color-1: #fff;  
 }
 
 body {
@@ -133,7 +136,7 @@ header nav .index-login-btn:hover {
 header nav .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #f9f9f9;
+    background-color: var(--color-1);
     min-width: 160px;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
@@ -147,11 +150,10 @@ header nav .dropdown-content a {
 }
 
 header nav .dropdown-content a:hover {
-    background-color: #ddd;
+    background-color: var(--color-4);
 }
 
-
-header nav .home .home-slider .slide{
+.home .home-slider .slide{
     display : flex;
     align-items : center;
     height: 100vh;
@@ -237,4 +239,10 @@ header nav .home .home-slider .slide{
     .home .home-slider .slide .content p {
         font-size: 1.5rem;
     }
+}
+
+
+.redirectButton
+{
+    left: 90.5%;
 }

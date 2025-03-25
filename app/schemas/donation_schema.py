@@ -19,7 +19,6 @@ class ListDonationResponse(BaseModel):
     causes: List[DonationResponse]
 
 class DonationCreate(BaseModel):
-    donation_id: int
     address_account: str 
     value: float
     fk_cause: int

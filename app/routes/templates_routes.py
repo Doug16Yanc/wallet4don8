@@ -19,7 +19,7 @@ async def get_template(request: Request):
 
 # User routes
 
-router.get("/login", response_class=HTMLResponse)
+router.get("/login_user", response_class=HTMLResponse)
 async def login(request: Request):
     context = {
         "request": request,
@@ -28,7 +28,7 @@ async def login(request: Request):
     }
     return templates.TemplateResponse("user/login_user.html", context)
 
-router.get("/reset_password", response_class=HTMLResponse)
+router.get("/reset_password_user", response_class=HTMLResponse)
 async def reset_user(request: Request):
     context = {
         "request": request,
@@ -37,7 +37,7 @@ async def reset_user(request: Request):
     }
     return templates.TemplateResponse("user/reset_user.html", context)
 
-router.get("/create", response_class=HTMLResponse)
+router.get("/create_user", response_class=HTMLResponse)
 async def create_user(request: Request):
     context = {
         "request": request,
@@ -47,7 +47,7 @@ async def create_user(request: Request):
     return templates.TemplateResponse("user/create_user.html", context)
 
 # Admin routes
-router.get("/login", response_class=HTMLResponse)
+@router.get("/login_admin", response_class=HTMLResponse)
 async def login_admin(request: Request):
     context = {
         "request": request,
@@ -56,7 +56,7 @@ async def login_admin(request: Request):
     }
     return templates.TemplateResponse("admin/login_admin.html", context)
 
-router.get("/reset_password", response_class=HTMLResponse)
+@router.get("/reset_password_admin", response_class=HTMLResponse)
 async def reset_admin(request: Request):
     context = {
         "request": request,
@@ -65,17 +65,39 @@ async def reset_admin(request: Request):
     }
     return templates.TemplateResponse("admin/reset_admin.html", context)
 
-@router.get("/dashboard", response_class=HTMLResponse)
+@router.get("/page_admin", response_class=HTMLResponse)
+async def reset_admin(request: Request):
+    context = {
+        "request": request,
+        "title": "Redefinir Senha de Admin",
+        "message": "Bem-vindo à página do admin."
+    }
+    return templates.TemplateResponse("admin/page_admin.html", context)
+
+
+# Dashboard
+
+@router.get("/dashboard_to_user", response_class=HTMLResponse)
 async def dashboard(request: Request):
     context = {
         "request": request,
         "title": "Painel de Administração",
-        "message": "Bem-vindo ao painel de administração."
+        "message": "Bem-vindo ao dashboard do usuário comum (doador)."
     }
-    return templates.TemplateResponse("admin/dashboard.html", context)
+    return templates.TemplateResponse("dashboard/dashboard_to_user.html", context)
 
 
-#Causes
+@router.get("/dashboard_to_admin", response_class=HTMLResponse)
+async def dashboard(request: Request):
+    context = {
+        "request": request,
+        "title": "Painel de Administração",
+        "message": "Bem-vindo ao  dashboard do administrador."
+    }
+    return templates.TemplateResponse("dashboard/dashboard_to_admin.html", context)
+
+
+# Causes
 
 @router.get("/page_causes", response_class=HTMLResponse)
 async def get_causes(request: Request):
@@ -83,7 +105,7 @@ async def get_causes(request: Request):
         "request": request,
         "title": "FastAPI com causas",
     }
-    return templates.TemplateResponse("causes/causes.html", context)
+    return templates.TemplateResponse("causes/causes_by_user.html", context)
 
 @router.get("/create_causes", response_class=HTMLResponse)
 async def get_causes(request: Request):
@@ -96,13 +118,13 @@ async def get_causes(request: Request):
 
 # Donations
 
-@router.get("/page_donations", response_class=HTMLResponse)
+@router.get("/donations_to_user", response_class=HTMLResponse)
 async def get_home(request: Request):
     context = {
         "request": request,
         "title": "FastAPI com doações"
     }
-    return templates.TemplateResponse("donations/donations.html", context)
+    return templates.TemplateResponse("donations/donations_to_user.html", context)
 
 
 @router.get("/create_donations", response_class=HTMLResponse)
@@ -123,13 +145,13 @@ async def get_home(request: Request):
     return templates.TemplateResponse("donations/delete_donations.html", context)
 
 
-@router.get("/list_donations", response_class=HTMLResponse)
+@router.get("/donations_to_admin", response_class=HTMLResponse)
 async def get_home(request: Request):
     context = {
         "request": request,
         "title": "FastAPI com lista de doações"
     }
-    return templates.TemplateResponse("donations/list_donations.html", context)
+    return templates.TemplateResponse("donations/donations_to_admin.html", context)
 
 
 # Users
@@ -161,14 +183,3 @@ async def get_user(request: Request):
     }
     return templates.TemplateResponse("user/create_user.html", context)
 
-
-# Dashboard
-
-@router.get("/dashboard", response_class=HTMLResponse)
-async def reset(request: Request):
-    context = {
-        "request": request,
-        "title": "FastAPI com Reset",
-        "message": "Bem-vindo ao reset."
-    }
-    return templates.TemplateResponse("dashboard/dashboard.html", context)

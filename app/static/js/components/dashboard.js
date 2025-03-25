@@ -1,10 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("sair").addEventListener("click", function () {
-        window.location.href = "index.html";
-    });
-});
-
-document.addEventListener("DOMContentLoaded", function () {
     const ctx = document.getElementById("donationsChart").getContext("2d");
     new Chart(ctx, {
         type: "line",

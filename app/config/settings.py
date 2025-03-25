@@ -1,6 +1,5 @@
 from pydantic import BaseSettings
 
-
 class Settings(BaseSettings):
     DATABASE_PORT: int
     POSTGRES_PASSWORD: str
