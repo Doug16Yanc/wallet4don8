@@ -25,6 +25,16 @@ def find_donation_by_id(
     return {"status": "success", "message": "Doação encontrada com sucesso!", "donation": donation}
 
 
+@router.get("/get_donations/{user_id}", response_model=list[donation_schema.DonationResponse])
+def find_user_donations(
+    user_id: int,  
+    service: DonationService = Depends(get_donation_service)
+):
+    donations = service.find_donations_by_user(user_id)
+    
+    return donations
+
+
 @router.patch("/update_donation/{donation_id}", response_model=donation_schema.DonationResponse)
 def update_donation_status(
     donation_id: int,
@@ -42,7 +52,7 @@ def find_all_donations(service: DonationService = Depends(get_donation_service))
     return donations
 
 
-@router.delete("/donation/{donation_id}")
+@router.delete("/delete_donation/{donation_id}")
 def delete_donation(
     donation_id: int,
     service: DonationService = Depends(get_donation_service)

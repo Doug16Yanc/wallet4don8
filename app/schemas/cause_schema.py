@@ -1,6 +1,7 @@
 from typing import List, Optional
-from pydantic import BaseModel
+from pydantic import BaseModel, field_serializer
 from enum import Enum
+import base64
 
 class CauseResponse(BaseModel):
     cause_name: str
@@ -8,14 +9,20 @@ class CauseResponse(BaseModel):
     certification_code: str
     amount: float
     status_amount: str
-    img_data: Optional[bytes] 
-    fk_user_id: int  
+    image_data: Optional[str] 
+    fk_user: int  
+    
+    @field_serializer('image_data')
+    def serialize_image(self, image_data: Optional[bytes], _info):
+        if image_data is None:
+            return None
+        return f"data:image/jpeg;base64,{base64.b64encode(image_data).decode('utf-8')}"
     
     class Config:
-        from_attributes = True  
-        allow_population_by_field_name = True
-        arbitrary_types_allowed = True
-
+        from_attributes = True
+        json_encoders = {
+            bytes: lambda v: base64.b64encode(v).decode('utf-8')
+        }
 
 class ListCauseResponse(BaseModel):
     status: str

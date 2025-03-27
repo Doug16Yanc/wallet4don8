@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("sair").addEventListener("click", function () {
-        window.location.href = "index";
+    document.getElementById("voltar").addEventListener("click", function () {
+        window.location.href = "page_causes";
     });
 });
 
@@ -8,26 +8,31 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('donation-form');
 
-     document.getElementById('create-donation').addEventListener('click', async (event) => {
+     document.getElementById('create_donation').addEventListener('click', async (event) => {
         event.preventDefault();
+        const urlParams = new URLSearchParams(window.location.search);
+        const causeId = urlParams.get('id'); 
+
+        if (causeId) {
+            document.getElementById('cause_id').value = causeId;  
+        }
 
         const user_id = sessionStorage.getItem('user_id');
 
         if (!user_id) {
-            alert('User id not found, try later again!')
+            alert('Identificador de usuário não identificado. Tente novamente!')
             return;
         }
 
         const formData = {
-            donation_id: parseInt(document.getElementById('donation-id').value, 10),
-            address_account: document.getElementById('wallet-address').value.trim(),
+            address_account: document.getElementById('wallet_address').value.trim(),
             value: parseFloat(document.getElementById('amount').value),
-            fk_cause: parseInt(document.getElementById('cause-id').value, 10),
+            fk_cause: causeId,
             fk_user: parseInt(sessionStorage.getItem('user_id'), 10)
         };
 
         try {
-            const response = await fetch('http://0.0.0.0:8000/donations/create_donations', {
+            const response = await fetch('http://0.0.0.0:8000/donations/create_donation', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

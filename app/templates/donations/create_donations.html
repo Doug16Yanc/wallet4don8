@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/css/style.css">
-    <link rel="stylesheet" href="../static/css/donations/donations.css">
-    <script src="../static/js/login.js"></script>
-    <script src="../static/js/links.js"></script>
+    <link rel="stylesheet" href="../static/css/donations/create_donations.css">
+    <script src="../static/js/user/page_user.js"></script>
+    <script src="../static/js/donations/create_donations.js"></script>
     <title>Wallet4Don8</title>
 </head>
 <body>
@@ -14,14 +14,38 @@
         <nav>
             <img src="../static/images/icon.png" alt="" width="150">
             <ul>
-                <li> <a id="causes-btn">Nossas causas</a></li>
-                <li> <a id="donations-btn">Minhas doações</a></li>
-                <li> <a id="dashboard">Dashboard</a></li>
+                <li> <a id="initial-btn">Nossas causas</a></li>
+                <li> <a id="donation-btn">Minhas doações</a></li>
+                <li> <a id="dashboard-btn">Dashboard</a></li>
             </ul>
             <div class="button">
-                 <button id="sair">Sair</button>
+                 <button id="voltar">Voltar</button>
             </div>
         </nav>
         </header>
+        <div class="box">
+            <div class="container">
+            <div class="text-creation">
+                Doação
+            </div>
+            <div class="form">
+                <form id="cause-form" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" id="cause_id" name="cause_id">
+                    <div>
+                        <label for="address">Endereço da carteira</label>
+                        <input type="text" id="wallet_address" name="wallet_address" >
+                    </div>
+                    <div>
+                        <label for="amount">Valor</label>
+                        <input type="number" id="amount" name="amount" min="0.01" step="any" required>
+                    </div>
+                        <div class="button-create">
+                            <div class="button">
+                                <button id="create_donation">Realizar</button>
+                            </div>
+                        </div>
+                  </form>
+                </div>
+        </div>
 </body>
 </html>

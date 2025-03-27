@@ -3,12 +3,11 @@ document.getElementById('update-cause').addEventListener('click', async (event) 
 
     const cause_id = parseInt(document.getElementById('causeId').value, 10);
     const formData = {
-        cause_id: cause_id,
-        status_amount: "applied"
+        cause_id: cause_id
     };
 
     try {
-        const response = await fetch(`http://localhost:8000/causes/update-cause/${cause_id}`, {
+        const response = await fetch(`http://localhost:8000/causes/update_cause/${cause_id}`, {
             method: 'PATCH', 
             headers: {
                 'Content-Type': 'application/json'
@@ -22,7 +21,7 @@ document.getElementById('update-cause').addEventListener('click', async (event) 
             console.log(result);
         } else {
             const error = await response.json();
-            alert('Erro ao atualizar causa: ' + error.detail);
+            alert('Erro ao atualizar causa: ' + error.message);
             console.error(error);
         }
     } catch (err) {

@@ -37,6 +37,14 @@ class DonationService:
         
         return donation
     
+    def find_donations_by_user(self, user_id: int):
+        donations = self.repository.find_donations_by_user(user_id)
+
+        if not donations:
+            raise donations_list_empty.DonationListEmpty()
+        
+        return donations
+    
     def update_donation_status(self, donation_id: int, new_amount: float):
         donation = self.db.query().filter(donation_id == donation_id).first()
         
@@ -53,7 +61,7 @@ class DonationService:
         return donations
 
     def delete_donation(self, id: int):
-        donation_found = self.find_donation(id)
+        donation_found = self.find_donation_by_id(id)
 
         if not donation_found:
             raise donation_not_found.DonationNotFound()

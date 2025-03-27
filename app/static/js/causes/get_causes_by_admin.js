@@ -15,26 +15,39 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error(`Erro: ${response.status}`);
             }
             return response.json();
-        
         })
         .then(data => {
+            console.log("Dados recebidos da API:", data);
+            console.log("Imagem", data.causes.image_data);
+            
             if (data && data.status === 'success' && Array.isArray(data.causes)) {
                 data.causes.forEach(cause => {
                     if (cause && cause.cause_name && cause.description) {
+                        console.log("Processando causa:", cause.cause_id); 
+                        console.log("Dados da imagem:", cause.image_data ? `Base64 (${cause.image_data.length} chars)` : 'Nenhuma imagem'); 
+
                         const box = document.createElement('div');
                         box.classList.add('box');
 
-                        const imgElement = document.createElement('img');
-                        imgElement.alt = '';
-
-                        if (cause.image_data) {
-                            imgElement.src = `data:image;base64,${cause.image_data}`;
+                        let imageHtml = '';
+                        if (cause.image_data && cause.image_data.length > 100) {
+                            imageHtml = `
+                                <div class="image">
+                                    <img src="data:image/*;base64,${cause.image_data}" 
+                                         alt="${cause.cause_name}"
+                                         onerror="this.style.display='none'; console.error('Erro ao carregar imagem')">
+                                </div>
+                            `;
+                        } else {
+                            imageHtml = `
+                                <div class="image">
+                                    <div class="no-image-placeholder">Sem imagem</div>
+                                </div>
+                            `;
                         }
 
-                        console.log(cause.image_data);
                         box.innerHTML = `
-                            <div class="image">
-                            </div>
+                            ${imageHtml}
                             <div class="content">
                                 <h1>${cause.cause_name}</h1>
                                 <div class="content-row">
@@ -43,79 +56,37 @@ document.addEventListener('DOMContentLoaded', () => {
                                         <p>${cause.cause_id}</p>
                                         
                                         <h2>Código certificador</h2>
-                                        <p>${cause.certification_code}</p>
+                                        <p>${cause.certification_code || 'Não informado'}</p>
                                     </div>
                                     <div class="content-second-column">
                                         <h2>Montante atual</h2>
-                                        <p class="current-amount">+ ${cause.amount}</p>
+                                        <p class="current-amount">+ ${cause.amount || 0}</p>
                                         <h2>Status do montante</h2>
-                                        <h4 class="status-amount">${cause.status_amount}</h4>
+                                        ${cause.status_amount === "applied" ? "Aplicado" : 
+                                          cause.status_amount === "stored" ? "Armazenado" : 
+                                          cause.status_amount || "Não informado"}
                                     </div>
                                 </div>
                                 <div class="content-description">
                                     ${cause.description}
                                 </div>
-                                <!-- Botões de atualização e exclusão -->
-                                <button class="update-status-button" data-cause-id="${cause.cause_id}">Aplicar valor</button>
-                                <button class="delete-cause-button" data-cause-id="${cause.cause_id}">Excluir causa</button>
+                                <div class="action-buttons">
+                                    <button class="update-status-button" data-cause-id="${cause.cause_id}">Aplicar valor</button>
+                                    <button class="delete-cause-button" data-cause-id="${cause.cause_id}">Excluir causa</button>
+                                </div>
                             </div>
                         `;
-
-                        const imageContainer = box.querySelector('.image');
-                        imageContainer.appendChild(imgElement);
 
                         const updateStatusButton = box.querySelector('.update-status-button');
                         updateStatusButton.addEventListener('click', () => {
                             const causeId = updateStatusButton.getAttribute('data-cause-id');
-
-                            fetch(`http://localhost:8000/causes/update_cause/${causeId}`, {
-                                method: 'PATCH',
-                                headers: {
-                                    'Authorization': `Bearer ${token}`,
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({
-                                    applied_amount: cause.amount 
-                                })
-                            })
-                            .then(response => response.json())
-                            .then(updatedCause => {
-                                if (updatedCause.status === 'success') {
-                                    const statusAmountElement = box.querySelector('.status-amount');
-                                    statusAmountElement.textContent = updatedCause.cause.status_amount;
-                                } else {
-                                    alert('Erro ao aplicar valor.');
-                                }
-                            })
-                            .catch(error => {
-                                console.error('Erro ao aplicar valor:', error);
-                                alert('Erro ao aplicar valor.');
-                            });
+                            updateCauseStatus(causeId, cause.amount, token);
                         });
 
                         const deleteCauseButton = box.querySelector('.delete-cause-button');
                         deleteCauseButton.addEventListener('click', () => {
                             const causeId = deleteCauseButton.getAttribute('data-cause-id');
-                            if (confirm('Tem certeza que deseja excluir esta causa?')) {
-                                fetch(`http://localhost:8000/causes/cause/${causeId}`, {
-                                    method: 'DELETE',
-                                    headers: {
-                                        'Authorization': `Bearer ${token}`
-                                    }
-                                })
-                                .then(response => {
-                                    if (response.ok) {
-                                        alert('Causa excluída com sucesso!');
-                                        window.location.reload();  
-                                    } else {
-                                        alert('Erro ao excluir a causa.');
-                                    }
-                                })
-                                .catch(error => {
-                                    console.error('Erro ao excluir a causa:', error);
-                                    alert('Erro ao excluir a causa.');
-                                });
-                            }
+                            deleteCause(causeId, token);
                         });
 
                         container.appendChild(box);
@@ -125,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             } else {
                 console.error('Formato de resposta inválido:', data);
+                alert('Ocorreu um erro ao carregar as causas. Por favor, tente novamente.');
             }
         })
         .catch(error => {
@@ -136,14 +108,55 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-/*
-function arrayBufferToBase64(buffer) {
-    let binary = '';
-    const bytes = new Uint8Array(buffer);
-    const len = bytes.byteLength;
-    for (let i = 0; i < len; i++) {
-        binary += String.fromCharCode(bytes[i]);
-    }
-    return window.btoa(binary);
+function updateCauseStatus(causeId, amount, token) {
+    if (!confirm('Deseja realmente aplicar este valor?')) return;
+
+    fetch(`http://localhost:8000/causes/update_cause/${causeId}`, {
+        method: 'PATCH',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            applied_amount: amount 
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            alert('Valor aplicado com sucesso!');
+            window.location.reload();
+        } else {
+            alert('Erro ao aplicar valor: ' + (data.message || ''));
+        }
+    })
+    .catch(error => {
+        console.error('Erro ao aplicar valor:', error);
+        alert('Erro ao aplicar valor. Verifique o console para detalhes.');
+    });
 }
-*/
+
+function deleteCause(causeId, token) {
+    if (!confirm('Tem certeza que deseja excluir esta causa?')) return;
+
+    fetch(`http://localhost:8000/causes/delete_cause/${causeId}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    })
+    .then(response => {
+        if (response.ok) {
+            alert('Causa excluída com sucesso!');
+            window.location.reload();  
+        } else {
+            response.json().then(data => {
+                alert('Erro ao excluir a causa: ' + (data.message || ''));
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Erro ao excluir a causa:', error);
+        alert('Erro ao excluir a causa. Verifique o console para detalhes.');
+    });
+}

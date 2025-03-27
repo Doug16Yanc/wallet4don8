@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.location.href = "page_admin"
                     console.log(result);
                 } else {
-                    const error = await response.text();
+                    const error = await response.json();
                     alert('Falha ao criar a causa: ' + error);
                     console.error('Erro:', error);
                 }

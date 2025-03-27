@@ -38,7 +38,7 @@ def update_cause_by_id(
     return {"status": "success", "message": "Montante atualizado com sucesso!", "cause": updated_cause}
    
 
-@router.delete("/cause/{cause_id}")
+@router.delete("/delete_cause/{cause_id}")
 def delete_cause(
     cause_id: int,
     service: CauseService = Depends(get_cause_service)

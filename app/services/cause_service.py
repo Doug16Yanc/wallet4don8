@@ -23,7 +23,7 @@ class CauseService:
 
             decoded_image = base64.b64decode(image_data)
 
-            max_image_size = 5 * 1024 * 1024  # 5MB
+            max_image_size = 5 * 1024 * 1024  
             if len(decoded_image) > max_image_size:
                 raise ValueError("Imagem muito grande. Limite máximo: 5MB")
 
@@ -50,7 +50,7 @@ class CauseService:
         return self.repository.create_cause(cause_schema.CauseCreate(**cause_dict))
     
     def find_cause_by_id(self, id: int):
-        cause_found = self.repository.find_cause_by_id(self, id)
+        cause_found = self.repository.find_cause_by_id(id)
         return cause_found
 
     def find_cause_by_name(self, name: str):
@@ -64,19 +64,24 @@ class CauseService:
             raise causes_list_empty.CausesListEmpty()
 
         return causes
-
+    
     def update_cause_by_id(self, id: int):
-        cause = self.find_cause_by_id(id)
+        cause = self.repository.find_cause_by_id(id)  
+
+        if not cause:
+            raise cause_not_found.CauseNotFound()
 
         if cause.amount == 0.0:
             raise cause_amount_empty.CauseAmountEmpty()
 
-        return self.repository.update_cause(id, new_amount)
+        updated_cause = self.repository.update_cause_status(id, "applied")
 
-    def delete_cause_by_name(self, name: str):
-        cause = self.find_cause_by_name(name)
+        return updated_cause
+    
+    def delete_cause(self, id: int):
+        cause = self.find_cause_by_id(id)
 
         if cause.status_amount == "stored":
             raise cause_deletion_exception.CauseDeletionException()
 
-        return self.repository.delete_cause_by_name(name)
+        return self.repository.delete_cause(id)

@@ -1,6 +1,7 @@
 .box-container {
     display: flex;
     flex-wrap: wrap;
+    margin-top: 30px;
     gap: 1.5rem;
     justify-content: center;
     align-items: center;
@@ -103,12 +104,29 @@
     display: inline-block;
 }
 
-
 .box-container .content .update-status-button:hover,
 .box-container .content .delete-cause-button:hover {
     background-color: var(--color-4);
 }
 
+.box-container .content .donate-button {
+    padding: 20px;
+    margin-top: 20px;
+    background-color: var(--color-3);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 26px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: auto;
+    display: inline-block;
+}
+
+.box-container .content .donate-button:hover {
+    background-color: var(--color-4);
+}
 
 @media screen and (max-width: 1200px) {
     .box-container .box {

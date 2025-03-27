@@ -9,10 +9,9 @@ class CauseRepository:
         self.db = db
 
     def find_all_causes(self):
+
         causes = self.db.query(Cause).all()
-        for cause in causes:
-            if cause.image_data:
-                cause.image_data = base64.b64encode(cause.image_data).decode('utf-8')
+
         return causes
 
     def find_cause_by_id(self, cause_id: int):
@@ -40,23 +39,21 @@ class CauseRepository:
             self.db.rollback()
             raise e
 
-    def update_cause(self, cause_id: int, update_data: dict):
-        try:
-            cause_query = self.db.query(Cause).filter(Cause.cause_id == cause_id)
-            cause = cause_query.first()
-            if not cause:
-                return None
-            cause_query.update(update_data, synchronize_session=False)
-            self.db.commit()
-            self.db.refresh(cause)
-            return cause_schema.CauseResponse.from_orm(cause)
-        except Exception as e:
-            self.db.rollback()
-            raise e
+    def update_cause_status(self, id: int, new_status: str):
+        cause = self.find_cause_by_id(id)
+    
+        if not cause:
+            return None
+        
+        cause.status_amount = new_status
+        self.db.commit() 
+        self.db.refresh(cause) 
 
-    def delete_cause_by_name(self, cause_name: str):
+        return cause
+
+    def delete_cause(self, id: int):
         try:
-            cause = self.db.query(Cause).filter(Cause.cause_name == cause_name).first()
+            cause = self.db.query(Cause).filter(Cause.cause_id == id).first()
             if cause:
                 self.db.delete(cause)
                 self.db.commit()

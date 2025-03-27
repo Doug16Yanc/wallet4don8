@@ -24,11 +24,14 @@ class DonationRepository:
             raise e
 
     def find_donation_by_id(self, id: int):
-        return self.db.query(Donation).filter(Donation.id == id).first()
+        return self.db.query(Donation).filter(Donation.donation_id == id).first()
+    
+    def find_donations_by_user(self, user_id: int):
+        return self.db.query(Donation).filter(Donation.fk_user == user_id).all()
     
     def update_donation(self, id : int, new_amount : float): 
 
-        donation = self.db.query(Donation).filter(Donation.id == id).first()
+        donation = self.db.query(Donation).filter(Donation.donation_id == id).first()
         donation.value = new_amount
         self.db.commit()
         self.db.refresh(donation)
@@ -40,13 +43,7 @@ class DonationRepository:
         return [donation_schema.DonationResponse.from_orm(donation) for donation in donations]
 
     def delete_donation(self, id: int):
-        try:
-            donation = self.db.query(Donation).filter(Donation.id == id).first()
-            if donation:
-                self.db.delete(donation)
-                self.db.commit()
-                return donation_schema.DonationResponse.from_orm(donation)
-            return None
-        except Exception as e:
-            self.db.rollback()
-            raise e
+        donation = self.db.query(Donation).filter(Donation.donation_id == id).first()
+            
+        self.db.delete(donation)
+        self.db.commit()           

@@ -69,8 +69,8 @@
     font-weight: normal;
 }
 
-.box-container .content .update-status-button,
-.box-container .content .delete-cause-button {
+.box-container .content .update-button,
+.box-container .content .delete-button {
     padding: 20px;
     margin-top: 20px;
     background-color: var(--color-3);
@@ -85,9 +85,8 @@
     display: inline-block;
 }
 
-
-.box-container .content .update-status-button:hover,
-.box-container .content .delete-cause-button:hover {
+.box-container .content .update-button:hover,
+.box-container .content .delete-button:hover {
     background-color: var(--color-4);
 }
 
