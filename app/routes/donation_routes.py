@@ -41,7 +41,7 @@ def update_donation_status(
     new_amount: float,  
     service: DonationService = Depends(get_donation_service)
 ):
-    donation = service.update_donation_status(donation_id, new_amount)
+    donation = service.update_donation(donation_id, new_amount)
     
     return {"status": "success", "message": "Valor da doação atualizado com sucesso!", "donation": donation}
 

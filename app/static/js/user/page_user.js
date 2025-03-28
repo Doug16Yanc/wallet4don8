@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("donation-btn").addEventListener("click", function () {
         window.location.href = "donations_to_user";

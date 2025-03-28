@@ -1,27 +1,6 @@
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("initial-btn").addEventListener("click", function () {
-        window.location.href = "page_causes";
-    })
-})
-
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("donation-btn").addEventListener("click", function () {
-        window.location.href = "page_donations";
-    })
-})
-
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("dashboard-btn").addEventListener("click", function () {
-        window.location.href = "dashboard_to_admin";
-    })
-})
-
-
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.querySelector('.box-container');
-    const userId = sessionStorage.getItem('user_id'); // Pegando o ID do usuário logado
+    const userId = sessionStorage.getItem('user_id'); 
 
     if (!userId) {
         alert('Usuário não identificado! Faça login.');
@@ -93,8 +72,12 @@ function updateDonation(donationId) {
         return;
     }
 
-    fetch(`http://localhost:8000/donations/update_donation/${donationId}?new_value=${newValue}`, {
-        method: 'PATCH'
+    fetch(`http://localhost:8000/donations/update_donation/${donationId}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ new_amount: parseFloat(newValue) })
     })
     .then(response => response.json())
     .then(result => {
@@ -115,7 +98,7 @@ function deleteDonation(donationId) {
           console.log('Doação excluída com sucesso');
         } else {
           return response.json().then(data => {
-            console.error('Erro ao excluir doação:', data);
+            console.error('Erro ao excluir doação:', data.message);
           });
         }
       })

@@ -45,7 +45,7 @@ class DonationService:
         
         return donations
     
-    def update_donation_status(self, donation_id: int, new_amount: float):
+    def update_donation(self, donation_id: int, new_amount: float):
         donation = self.db.query().filter(donation_id == donation_id).first()
         
         donation.amount = new_amount
