@@ -77,7 +77,16 @@ async def reset_admin(request: Request):
 
 # Dashboard
 
-@router.get("/dashboard_to_user", response_class=HTMLResponse)
+@router.get("/dashboard_admin", response_class=HTMLResponse)
+async def dashboard(request: Request):
+    context = {
+        "request": request,
+        "title": "Painel de Administração",
+        "message": "Bem-vindo ao dashboard do administrador."
+    }
+    return templates.TemplateResponse("dashboard/dashboard_to_admin.html", context)
+
+@router.get("/dashboard_user", response_class=HTMLResponse)
 async def dashboard(request: Request):
     context = {
         "request": request,
@@ -85,17 +94,6 @@ async def dashboard(request: Request):
         "message": "Bem-vindo ao dashboard do usuário comum (doador)."
     }
     return templates.TemplateResponse("dashboard/dashboard_to_user.html", context)
-
-
-@router.get("/dashboard_to_admin", response_class=HTMLResponse)
-async def dashboard(request: Request):
-    context = {
-        "request": request,
-        "title": "Painel de Administração",
-        "message": "Bem-vindo ao  dashboard do administrador."
-    }
-    return templates.TemplateResponse("dashboard/dashboard_to_admin.html", context)
-
 
 # Causes
 

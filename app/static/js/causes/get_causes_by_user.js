@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                         </div>
                                         <div class="content-second-column">
                                             <h2>Montante atual</h2>
-                                            <p>+ ${cause.amount}</p>
+                                            <p class="current-amount">+ R$ ${(cause.amount || 0).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                                             <h2>Status do montante</h2>
                                             <h4 class="status-amount">
                                             ${cause.status_amount === "applied" ? "Aplicado" : cause.status_amount === "stored" ? "Armazenado" : cause.status_amount}

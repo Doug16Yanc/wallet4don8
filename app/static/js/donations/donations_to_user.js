@@ -64,45 +64,101 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Elemento .box-container não encontrado.');
     }
 });
-
 function updateDonation(donationId) {
-    const newValue = prompt("Digite o novo valor da doação:");
-    if (!newValue || isNaN(newValue) || newValue <= 0) {
-        alert("Por favor, insira um valor válido.");
-        return;
-    }
-
-    fetch(`http://localhost:8000/donations/update_donation/${donationId}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ new_amount: parseFloat(newValue) })
-    })
-    .then(response => response.json())
-    .then(result => {
-        alert(result.message);
-        document.getElementById(`value-${donationId}`).innerText = newValue; 
-    })
-    .catch(error => console.error('Erro ao atualizar doação:', error));
+    Swal.fire({
+        title: "💰 Atualizar Doação",
+        input: "number",
+        inputLabel: "Digite o novo valor:",
+        inputPlaceholder: "Ex: 0.1",
+        inputAttributes: { min: "0", step: "0.01" },
+        showCancelButton: true,
+        confirmButtonText: "Atualizar",
+        cancelButtonText: "Cancelar",
+        background: "#1E1C1C",
+        color: "#fff", 
+        confirmButtonColor: "#F84C0D", 
+        cancelButtonColor: "#666", 
+        customClass: {
+            popup: "custom-swal"
+        }
+    }).then((result) => {
+        if (result.isConfirmed && result.value > 0) {
+            fetch(`http://localhost:8000/donations/update_donation/${donationId}`, {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ new_amount: parseFloat(result.value) })
+            })
+            .then(response => response.json())
+            .then(data => {
+                Swal.fire({
+                    title: "✅ Atualizado!",
+                    text: data.message,
+                    icon: "success",
+                    background: "#1E1C1C",
+                    color: "#",
+                    confirmButtonColor: "#ff8c00"
+                });
+                document.getElementById(`value-${donationId}`).innerText = `R$ ${parseFloat(result.value).toFixed(2)}`;
+            })
+            .catch(error => Swal.fire({
+                title: "❌ Erro!",
+                text: "Não foi possível atualizar a doação.",
+                icon: "error",
+                background: "#1a1a1a",
+                color: "#ff8c00",
+                confirmButtonColor: "#ff8c00"
+            }));
+        }
+    });
 }
 
 function deleteDonation(donationId) {
-    if (!confirm("Tem certeza que deseja excluir esta doação?")) return;
-
-    fetch(`http://localhost:8000/donations/delete_donation/${donationId}`, {
-        method: 'DELETE'
-    })
-    .then(response => {
-        if (response.status === 204) {
-          console.log('Doação excluída com sucesso');
-        } else {
-          return response.json().then(data => {
-            console.error('Erro ao excluir doação:', data.message);
-          });
+    Swal.fire({
+        title: "🗑️ Confirmar Exclusão",
+        text: "Tem certeza que deseja excluir esta doação? Essa ação não pode ser desfeita.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Sim, excluir",
+        cancelButtonText: "Cancelar",
+        background: "#1E1C1C", 
+        color: "#fff",
+        confirmButtonColor: "#F84C0D", 
+        cancelButtonColor: "#666" 
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`http://localhost:8000/donations/delete_donation/${donationId}`, { method: 'DELETE' })
+            .then(response => {
+                if (response.status === 204) {
+                    Swal.fire({
+                        title: "✅ Excluído!",
+                        text: "A doação foi removida com sucesso.",
+                        icon: "success",
+                        background: "#1a1a1a",
+                        color: "#ff8c00",
+                        confirmButtonColor: "#ff8c00"
+                    });
+                    document.getElementById(`donation-${donationId}`).remove();
+                } else {
+                    Swal.fire({
+                        title: "❌ Erro!",
+                        text: "Não foi possível excluir a doação.",
+                        icon: "error",
+                        background: "#1a1a1a",
+                        color: "#ff8c00",
+                        confirmButtonColor: "#ff8c00"
+                    });
+                }
+            })
+            .catch(error => Swal.fire({
+                title: "❌ Erro!",
+                text: "Ocorreu um problema ao excluir.",
+                icon: "error",
+                background: "#1a1a1a",
+                color: "#ff8c00",
+                confirmButtonColor: "#ff8c00"
+            }));
         }
-      })
-      .catch(error => {
-        console.error('Erro na requisição:', error);
-      });
+    });
 }
+
+

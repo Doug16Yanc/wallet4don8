@@ -1,5 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Response
-from sqlalchemy.exc import IntegrityError
+from fastapi import APIRouter, Depends, status, Response
 from app.schemas import donation_schema
 from app.services.donation_service import DonationService
 from app.dependencies.donation_dependencies import get_donation_service
@@ -22,7 +21,7 @@ def find_donation_by_id(
     service: DonationService = Depends(get_donation_service)
 ):
     donation = service.find_donation_by_id(donation_id)
-    return {"status": "success", "message": "Doação encontrada com sucesso!", "donation": donation}
+    return donation
 
 
 @router.get("/get_donations/{user_id}", response_model=list[donation_schema.DonationResponse])

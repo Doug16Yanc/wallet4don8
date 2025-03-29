@@ -1,85 +1,155 @@
-
 .dashboard {
     margin-top: 40px;
     text-align: center;
     padding: 20px;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .dashboard h1 {
     color: var(--color-1);
+    margin-bottom: 30px;
+    font-size: 2.2rem;
 }
 
 .cards {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-around;
-    margin: 20px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+    margin: 30px 0;
 }
 
 .card {
     background: var(--color-2);
     border: 1px solid var(--color-4);
-    padding: 20px;
-    border-radius: 10px;
-    width: 200px;
+    padding: 25px 20px;
+    border-radius: 12px;
     text-align: center;
+    color: var(--color-1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card h2 {
+    font-size: 1.1rem;
+    margin-bottom: 15px;
     color: var(--color-1);
 }
 
 .value {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: bold;
     color: var(--color-4);
+    margin: 10px 0;
 }
 
-.charts {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
+.data-visualization {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
     margin-top: 40px;
-    
-}
-
-.chart-container {
-    height: 470px;
 }
 
 .chart-container, .map-container {
     background: var(--color-2);
-    color: var(--color-1);
     border: 1px solid var(--color-4);
     padding: 20px;
-    border-radius: 10px;
-    width: 45%;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.chart-container:hover, .map-container:hover {
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.chart-container {
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-container canvas {
+    flex-grow: 1;
+    width: 100% !important;
+    height: 100% !important;
 }
 
 #map {
-    height: 300px;
-    border-radius: 10px;
+    height: 500px;
+    border-radius: 8px;
+    width: 100%;
 }
 
-@media screen and (max-width: 900px) {
-    .cards {
-        flex-direction: column;
-        align-items: center;
-    }
+.loading {
+    opacity: 0.7;
+    position: relative;
+}
 
-    .card {
-        width: 90%;
-        margin-top: 20px;
-    }
+.loading::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top-color: var(--color-4);
+    animation: spin 1s linear infinite;
+}
 
-    .charts {
-        flex-direction: column;
-        align-items: center;
-    }
+@keyframes spin {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
 
-    .chart-container {
-        margin-top: 20px;
+@media screen and (max-width: 1024px) {
+    .data-visualization {
+        grid-template-columns: 1fr;
     }
-
+    
     .chart-container, .map-container {
-        width: 90%; 
-        margin-top: 20px;
+        height: 400px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .dashboard {
+        padding: 20px 15px;
+    }
+    
+    .cards {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .card {
+        padding: 20px 15px;
+    }
+    
+    .value {
+        font-size: 24px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .dashboard h1 {
+        font-size: 1.8rem;
+    }
+    
+    .chart-container, .map-container {
+        height: 350px;
+        padding: 15px;
+    }
+    
+    #map {
+        height: 350px;
     }
 }

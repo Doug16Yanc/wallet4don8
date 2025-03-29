@@ -4,11 +4,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('donation-form');
 
-     document.getElementById('create_donation').addEventListener('click', async (event) => {
+    document.getElementById('create_donation').addEventListener('click', async (event) => {
         event.preventDefault();
         const urlParams = new URLSearchParams(window.location.search);
         const causeId = urlParams.get('id'); 
@@ -20,7 +19,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const user_id = sessionStorage.getItem('user_id');
 
         if (!user_id) {
-            alert('Identificador de usuário não identificado. Tente novamente!')
+            Swal.fire({
+                title: "⚠️ Atenção!",
+                text: "Identificador de usuário não identificado. Tente novamente!",
+                icon: "warning",
+                background: "#1E1C1C",
+                color: "#ff8c00",
+                confirmButtonColor: "#F84C0D"
+            });
             return;
         }
 
@@ -42,16 +48,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (response.ok) {
                 const result = await response.json();
-                alert('Doação criada com sucesso!');
+                Swal.fire({
+                    title: "✅ Sucesso!",
+                    text: "Doação criada com sucesso!",
+                    icon: "success",
+                    background: "#1E1C1C",
+                    color: "#ff8c00",
+                    confirmButtonColor: "#F84C0D"
+                });
                 console.log(result);
             } else {
                 const error = await response.json();
-                alert('Erro ao criar doação: ' + error.detail);
+                Swal.fire({
+                    title: "❌ Erro!",
+                    text: "Erro ao criar doação: " + error.detail,
+                    icon: "error",
+                    background: "#1E1C1C",
+                    color: "#ff8c00",
+                    confirmButtonColor: "#F84C0D"
+                });
                 console.error(error);
             }
         } catch (err) {
-            alert('Um erro inesperado aconteceu.');
+            Swal.fire({
+                title: "❌ Erro inesperado!",
+                text: "Um erro inesperado aconteceu.",
+                icon: "error",
+                background: "#1E1C1C",
+                color: "#ff8c00",
+                confirmButtonColor: "#F84C0D"
+            });
             console.error(err);
         }
     });
 });
+

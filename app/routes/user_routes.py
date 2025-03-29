@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, status, Response
 from app.schemas import user_schema
 from app.services.user_service import UserService
 from app.dependencies.user_dependencies import get_user_service
@@ -24,3 +24,8 @@ def update_password(payload: user_schema.UserUpdate, service: UserService = Depe
     result = service.change_password(payload.user_email, payload.user_password)
 
     return result
+
+@router.delete("/delete_user/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_user(user_id : int, service: UserService = Depends(get_user_service)):
+    service.delete_donation(user_id)
+    return Response(status_code=status.HTTP_204_NO_CONTENT)

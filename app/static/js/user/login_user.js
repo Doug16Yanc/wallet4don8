@@ -2,15 +2,11 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("voltar").addEventListener("click", function () {
         window.location.href = "templates";
     });
-});
 
-document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("reset_password").addEventListener("click", function () {
         window.location.href = "reset_password";
     });
-});
 
-document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("create_user").addEventListener("click", function () {
         window.location.href = "create_user";
     });
@@ -18,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('login-form');
+
     if (loginForm) {
         loginForm.addEventListener('submit', async (event) => {
             event.preventDefault();
@@ -37,21 +34,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 const result = await response.json();
 
                 if (response.ok) {
-                    
                     sessionStorage.setItem('access_token', result.access_token);
                     sessionStorage.setItem('user_id', result.user_id);
-                    
-                    alert(`Bem-vindo(a) ${result.user_name}, seu token é ${result.access_token}`);
-                    window.location.href = '/page_causes';
+
+                    Swal.fire({
+                        title: `🎉 Bem-vindo(a), ${result.user_name}!`,
+                        text: "Login realizado com sucesso!",
+                        icon: "success",
+                        background: "#1E1C1C",
+                        color: "#ff8c00",
+                        confirmButtonColor: "#F84C0D"
+                    }).then(() => {
+                        window.location.href = '/page_causes';
+                    });
+
                 } else {
-                    
-                    alert(result.detail || 'Erro no login');
+                    Swal.fire({
+                        title: "❌ Erro no Login",
+                        text: result.detail || "Credenciais inválidas. Verifique seus dados e tente novamente.",
+                        icon: "error",
+                        background: "#1E1C1C",
+                        color: "#ff8c00",
+                        confirmButtonColor: "#F84C0D"
+                    });
                 }
             } catch (error) {
                 console.error('Erro:', error);
-                alert('Erro de conexão');
+                Swal.fire({
+                    title: "❌ Erro de Conexão",
+                    text: "Não foi possível se conectar ao servidor. Tente novamente mais tarde.",
+                    icon: "error",
+                    background: "#1E1C1C",
+                    color: "#ff8c00",
+                    confirmButtonColor: "#F84C0D"
+                });
             }
         });
     }
 });
-

@@ -24,6 +24,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("dashboard-btn").addEventListener("click", function () {
-        window.location.href = "dashboard_to_admin";
+        window.location.href = "dashboard_admin";
     });
 });

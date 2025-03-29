@@ -6,58 +6,55 @@
     <title>Wallet4Don8</title>
     <link rel="stylesheet" href="../static/css/style.css">
     <link rel="stylesheet" href="../static/css/components/dashboard.css">
-    <script src="../static/js/dashboard/dasboard.js"></script>
-    <script src="../static/js/admin/page_admin.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script defer src="../static/js/admin/page_admin.js"></script> 
+    <script defer src="../static/js/components/dashboard.js"></script>
 </head>
 <body>
     <header>
         <nav>
-            <img src="../static/images/icon.png" alt="" width="150">
+            <img src="../static/images/icon.png" alt="Logo Wallet4Don8" width="150">
             <ul>
-                <li> <a id="initial-btn">Início</a></li>
-                <li> <a id="create-causes-btn">Criar causa</a></li>
-                <li> <a id="donations-btn">Listar doações</a></li>
-                <li> <a id="dashboard-btn">Dashboard</a></li>
+                <li><a id="initial-btn">Início</a></li>
+                <li><a id="create-causes-btn">Criar causa</a></li>
+                <li><a id="donations-btn">Listar doações</a></li>
+                <li><a id="dashboard-btn">Dashboard</a></li>
             </ul>
             <div class="button">
-                    <button id="sair">Sair</button>
+                <button id="sair">Sair</button>
             </div>
-          </nav>
-        </header>
+        </nav>
+    </header>
+    
     <main class="dashboard">
         <h1>Impacto das Doações no Mundo</h1>
 
         <div class="cards">
             <div class="card">
                 <h2>Total Arrecadado</h2>
-                <p class="value">$1,250,000</p>
+                <p class="value" id="totalAmount">Carregando...</p>
             </div>
             <div class="card">
                 <h2>Países Beneficiados</h2>
-                <p class="value">45+</p>
+                <p class="value" id="totalCountries">Brasil</p>
             </div>
             <div class="card">
                 <h2>Doadores Ativos</h2>
-                <p class="value">8,500+</p>
+                <p class="value" id="totalDonors">2356</p>
             </div>
         </div>
 
-        <div class="charts">
+        <div class="data-visualization">
             <div class="chart-container">
-                <h2>Evolução das Doações</h2>
                 <canvas id="donationsChart"></canvas>
             </div>
-
             <div class="map-container">
-                <h2>Impacto Global</h2>
                 <div id="map"></div>
             </div>
         </div>
     </main>
 
-    <script src="../static/js/components/dashboard.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script defer src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </body>
 </html>

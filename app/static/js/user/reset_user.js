@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = "login_user";
     });
 });
-
 document.addEventListener('DOMContentLoaded', () => {
     const form_reset = document.getElementById('reset-form');
 
@@ -14,9 +13,15 @@ document.addEventListener('DOMContentLoaded', () => {
         const user_password = document.getElementById('user_password').value;
         const confirm_password = document.getElementById('confirm_user_password').value;
 
-
         if (user_password !== confirm_password) {
-            alert('As senhas não coincidem. Tente novamente.');
+            Swal.fire({
+                title: "❌ Senhas não coincidem!",
+                text: "Tente novamente.",
+                icon: "error",
+                background: "#1E1C1C",
+                color: "#ff8c00",
+                confirmButtonColor: "#F84C0D"
+            });
             return;
         }
 
@@ -35,15 +40,38 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (responseUpdate.ok) {
-                alert('Senha atualizada com sucesso!');
-                window.location.href = 'login_user';
+                Swal.fire({
+                    title: "✅ Senha redefinida!",
+                    text: "Sua senha foi atualizada com sucesso!",
+                    icon: "success",
+                    background: "#1E1C1C",
+                    color: "#ff8c00",
+                    confirmButtonColor: "#F84C0D"
+                }).then(() => {
+                    window.location.href = 'login_user';
+                });
+
             } else {
                 const error = await responseUpdate.json();
-                alert('Falha ao redefinir a senha: ' + error.detail);
+                Swal.fire({
+                    title: "❌ Falha ao redefinir senha!",
+                    text: error.detail || "Erro inesperado. Tente novamente.",
+                    icon: "error",
+                    background: "#1E1C1C",
+                    color: "#ff8c00",
+                    confirmButtonColor: "#F84C0D"
+                });
                 console.error('Error:', error);
             }
         } catch (error) {
-            alert('Um erro inesperado aconteceu. Verifique o console para mais detalhes.');
+            Swal.fire({
+                title: "❌ Erro inesperado!",
+                text: "Verifique o console para mais detalhes.",
+                icon: "error",
+                background: "#1E1C1C",
+                color: "#ff8c00",
+                confirmButtonColor: "#F84C0D"
+            });
             console.error('Error:', error);
         }
     });

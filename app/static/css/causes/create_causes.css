@@ -4,9 +4,9 @@
     justify-content: center;
     align-items: center;
     padding: 10px;
-    margin-top: 20px;
+    margin-top: 40px;
     gap: 10px;
-    height: 70vh;
+    height: 73vh;
 }
 
 .container {
@@ -14,7 +14,7 @@
     width: fit-content; 
     border-radius: 10px; 
     width: 50%;
-    height: 800px;
+    height: 950px;
 }
 
 .text-creation {
@@ -61,6 +61,14 @@ input {
     background-color: transparent;
     color: white;
     font-size: 22px;
+}
+
+#description {
+    height: 100px; 
+    padding: 8px;
+    text-align: left;
+    vertical-align: top;
+    resize: none; 
 }
 
 .create {

@@ -24,3 +24,10 @@ class UserService:
             return {"message": "Senha atualizada com sucesso!"}
         return {"error": "Erro ao atualizar a senha!"}
 
+    def delete_user_by_id(user_id : int) :
+        existing_user = self.repository.find_user_by_id(user_id)
+
+        if existing_user:
+            raise user_already_exists.UserAlreadyExists()
+        
+        return self.repository.delete_user(user)

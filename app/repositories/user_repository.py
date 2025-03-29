@@ -20,6 +20,35 @@ class UserRepository:
             self.db.rollback()
             raise e
 
+    """Criando o administrador de modo geral já""" 
+    def create_admin(self):
+        admin_email = "admin@don8.com"
+        
+        existing_admin = self.find_user_by_email(admin_email)
+        if existing_admin:
+            print("Administrador já existe.")
+            return None
+        
+        hashed_password = bcrypt.hashpw("admin123".encode('utf-8'), bcrypt.gensalt())
+
+        admin_user = User(
+            user_name="Admin",
+            user_email=admin_email,
+            user_password=hashed_password.decode('utf-8'),
+            is_admin=True 
+        )
+
+        self.db.add(admin_user)
+        self.db.commit()
+        self.db.refresh(admin_user)
+
+        print("Administrador criado com sucesso!")
+        return admin_user
+
+    
+    def find_user_by_id(self, id: int):
+        return self.db.query(User).filter(User.user_id == id).first()
+
     def find_user_by_email(self, email: str):
         return self.db.query(User).filter(User.user_email == email).first()
 
@@ -35,3 +64,9 @@ class UserRepository:
             self.db.commit()
             return True
         return False
+
+    def delete_user(self, user_id : int) :
+        user = self.db.query(User).filter(User.user_id == user_id).first()
+            
+        self.db.delete(user)
+        self.db.commit()   

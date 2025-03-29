@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('login-form');
-    const isAdminLogin = window.location.pathname.includes('login_admin');
 
     if (loginForm) {
         loginForm.addEventListener('submit', async (event) => {
@@ -21,8 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const formData = {
                 user_email: document.getElementById('user_email').value,
-                user_password: document.getElementById('user_password').value,
-                is_admin: isAdminLogin 
+                user_password: document.getElementById('user_password').value
             };
 
             try {
@@ -35,24 +33,40 @@ document.addEventListener('DOMContentLoaded', () => {
                 const result = await response.json();
 
                 if (response.ok) {
-                    if (isAdminLogin && !result.is_admin) {
-                        alert('Você não tem permissão de administrador');
-                        return;
-                    }
-
                     sessionStorage.setItem('access_token', result.access_token);
                     sessionStorage.setItem('user_id', result.user_id);
-                    sessionStorage.setItem('is_admin', result.is_admin);
 
-                    alert(`Bem-vindo(a) ${result.user_name}, seu token é ${result.access_token}`);
-                    
-                    window.location.href = isAdminLogin ? '/page_admin' : '/page_user';
+                    Swal.fire({
+                        title: `🎉 Bem-vindo(a), ${result.user_name}!`,
+                        text: "Login realizado com sucesso!",
+                        icon: "success",
+                        background: "#1E1C1C",
+                        color: "#ff8c00",
+                        confirmButtonColor: "#F84C0D"
+                    }).then(() => {
+                        window.location.href = '/page_admin';
+                    });
+
                 } else {
-                    alert(result.detail || 'Erro no login');
+                    Swal.fire({
+                        title: "❌ Erro no Login",
+                        text: result.detail || "Credenciais inválidas. Verifique seus dados e tente novamente.",
+                        icon: "error",
+                        background: "#1E1C1C",
+                        color: "#ff8c00",
+                        confirmButtonColor: "#F84C0D"
+                    });
                 }
             } catch (error) {
                 console.error('Erro:', error);
-                alert('Erro de conexão');
+                Swal.fire({
+                    title: "❌ Erro de Conexão",
+                    text: "Não foi possível se conectar ao servidor. Tente novamente mais tarde.",
+                    icon: "error",
+                    background: "#1E1C1C",
+                    color: "#ff8c00",
+                    confirmButtonColor: "#F84C0D"
+                });
             }
         });
     }
