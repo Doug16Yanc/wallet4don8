@@ -1,4 +1,24 @@
-function deleteDonation(donationId) {
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("delete-user").addEventListener("click", function () {
+        let userId = sessionStorage.getItem("user_id"); 
+        deleteUser(userId);
+    });
+});
+
+function deleteUser(userId) {
+    const token = localStorage.getItem("access_token") || sessionStorage.getItem("access_token"); 
+    if (!token) {
+        Swal.fire({
+            title: "⚠️ Erro!",
+            text: "Usuário não autenticado. Faça login novamente.",
+            icon: "warning",
+            background: "#1a1a1a",
+            color: "#ff8c00",
+            confirmButtonColor: "#ff8c00"
+        });
+        return;
+    }
+
     Swal.fire({
         title: "🗑️ Confirmar Exclusão",
         text: "Tem certeza que deseja remover seu cadastro? Só poderá acessar novamente com criação de usuário.",
@@ -9,10 +29,16 @@ function deleteDonation(donationId) {
         background: "#1E1C1C", 
         color: "#fff",
         confirmButtonColor: "#F84C0D", 
-        cancelButtonColor: "#666" 
+        cancelButtonColor: "#666"
     }).then((result) => {
         if (result.isConfirmed) {
-            fetch(`http://localhost:8000/users/delete_user${user}`, { method: 'DELETE' })
+            fetch(`http://localhost:8000/users/delete_user/${userId}`, {
+                method: 'DELETE',
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    "Content-Type": "application/json"
+                }
+            })
             .then(response => {
                 if (response.status === 204) {
                     Swal.fire({
@@ -22,6 +48,10 @@ function deleteDonation(donationId) {
                         background: "#1a1a1a",
                         color: "#ff8c00",
                         confirmButtonColor: "#ff8c00"
+                    }).then(() => {
+                        localStorage.removeItem("token");
+                        sessionStorage.removeItem("token");
+                        window.location.href = "templates"; 
                     });
                 } else {
                     Swal.fire({

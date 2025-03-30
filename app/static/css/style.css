@@ -136,14 +136,15 @@ header nav .index-login-btn:hover {
 header nav .dropdown-content {
     display: none;
     position: absolute;
-    background-color: var(--color-1);
+    background-color: var(--color-2);
     min-width: 160px;
     box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
 
 header nav .dropdown-content a {
-    color: black;
+    color: var(--color-1);
+    font-weight: bold;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
@@ -151,6 +152,16 @@ header nav .dropdown-content a {
 
 header nav .dropdown-content a:hover {
     background-color: var(--color-4);
+}
+
+
+@keyframes image {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .home .home-slider .slide{

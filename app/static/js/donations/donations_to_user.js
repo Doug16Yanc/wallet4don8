@@ -64,6 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Elemento .box-container não encontrado.');
     }
 });
+
 function updateDonation(donationId) {
     Swal.fire({
         title: "💰 Atualizar Doação",
@@ -75,9 +76,9 @@ function updateDonation(donationId) {
         confirmButtonText: "Atualizar",
         cancelButtonText: "Cancelar",
         background: "#1E1C1C",
-        color: "#fff", 
-        confirmButtonColor: "#F84C0D", 
-        cancelButtonColor: "#666", 
+        color: "#fff",
+        confirmButtonColor: "#F84C0D",
+        cancelButtonColor: "#666",
         customClass: {
             popup: "custom-swal"
         }
@@ -85,33 +86,44 @@ function updateDonation(donationId) {
         if (result.isConfirmed && result.value > 0) {
             fetch(`http://localhost:8000/donations/update_donation/${donationId}`, {
                 method: 'PATCH',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${sessionStorage.getItem('access_token')}` 
+                },
                 body: JSON.stringify({ new_amount: parseFloat(result.value) })
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) { 
+                    return response.json().then(err => { 
+                        throw new Error(err.detail || "Erro ao atualizar doação"); 
+                    });
+                }
+                return response.json();
+            })
             .then(data => {
                 Swal.fire({
                     title: "✅ Atualizado!",
-                    text: data.message,
+                    text: data.message || "Valor atualizado com sucesso!",
                     icon: "success",
                     background: "#1E1C1C",
-                    color: "#",
+                    color: "#fff",
                     confirmButtonColor: "#ff8c00"
                 });
                 document.getElementById(`value-${donationId}`).innerText = `R$ ${parseFloat(result.value).toFixed(2)}`;
             })
-            .catch(error => Swal.fire({
-                title: "❌ Erro!",
-                text: "Não foi possível atualizar a doação.",
-                icon: "error",
-                background: "#1a1a1a",
-                color: "#ff8c00",
-                confirmButtonColor: "#ff8c00"
-            }));
+            .catch(error => {
+                Swal.fire({
+                    title: "❌ Erro!",
+                    text: error.message || "Não foi possível atualizar a doação.",
+                    icon: "error",
+                    background: "#1a1a1a",
+                    color: "#ff8c00",
+                    confirmButtonColor: "#ff8c00"
+                });
+            });
         }
     });
 }
-
 function deleteDonation(donationId) {
     Swal.fire({
         title: "🗑️ Confirmar Exclusão",
@@ -120,45 +132,49 @@ function deleteDonation(donationId) {
         showCancelButton: true,
         confirmButtonText: "Sim, excluir",
         cancelButtonText: "Cancelar",
-        background: "#1E1C1C", 
+        background: "#1E1C1C",
         color: "#fff",
-        confirmButtonColor: "#F84C0D", 
-        cancelButtonColor: "#666" 
+        confirmButtonColor: "#F84C0D",
+        cancelButtonColor: "#666"
     }).then((result) => {
         if (result.isConfirmed) {
-            fetch(`http://localhost:8000/donations/delete_donation/${donationId}`, { method: 'DELETE' })
-            .then(response => {
-                if (response.status === 204) {
-                    Swal.fire({
-                        title: "✅ Excluído!",
-                        text: "A doação foi removida com sucesso.",
-                        icon: "success",
-                        background: "#1a1a1a",
-                        color: "#ff8c00",
-                        confirmButtonColor: "#ff8c00"
-                    });
-                    document.getElementById(`donation-${donationId}`).remove();
-                } else {
-                    Swal.fire({
-                        title: "❌ Erro!",
-                        text: "Não foi possível excluir a doação.",
-                        icon: "error",
-                        background: "#1a1a1a",
-                        color: "#ff8c00",
-                        confirmButtonColor: "#ff8c00"
-                    });
+            fetch(`http://localhost:8000/donations/delete_donation/${donationId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${sessionStorage.getItem('access_token')}`
                 }
             })
-            .catch(error => Swal.fire({
-                title: "❌ Erro!",
-                text: "Ocorreu um problema ao excluir.",
-                icon: "error",
-                background: "#1a1a1a",
-                color: "#ff8c00",
-                confirmButtonColor: "#ff8c00"
-            }));
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => {
+                        throw new Error(err.detail || "Erro ao excluir doação");
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                Swal.fire({
+                    title: "✅ Excluído!",
+                    text: data.message || "A doação foi removida com sucesso.",
+                    icon: "success",
+                    background: "#1a1a1a",
+                    color: "#ff8c00",
+                    confirmButtonColor: "#ff8c00",
+                    willClose: () => {
+                        window.location.reload();
+                    }
+                });
+            })
+            .catch(error => {
+                Swal.fire({
+                    title: "❌ Erro!",
+                    text: error.message || "Ocorreu um problema ao excluir.",
+                    icon: "error",
+                    background: "#1a1a1a",
+                    color: "#ff8c00",
+                    confirmButtonColor: "#ff8c00"
+                });
+            });
         }
     });
 }
-
-

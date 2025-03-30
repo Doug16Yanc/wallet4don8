@@ -27,5 +27,5 @@ def update_password(payload: user_schema.UserUpdate, service: UserService = Depe
 
 @router.delete("/delete_user/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_user(user_id : int, service: UserService = Depends(get_user_service)):
-    service.delete_donation(user_id)
+    service.delete_user(user_id)
     return Response(status_code=status.HTTP_204_NO_CONTENT)

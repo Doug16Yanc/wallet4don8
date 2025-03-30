@@ -103,7 +103,7 @@ async def get_causes(request: Request):
         "request": request,
         "title": "FastAPI com causas",
     }
-    return templates.TemplateResponse("causes/causes_by_user.html", context)
+    return templates.TemplateResponse("causes/causes_to_user.html", context)
 
 @router.get("/create_causes", response_class=HTMLResponse)
 async def get_causes(request: Request):
@@ -134,15 +134,6 @@ async def get_home(request: Request):
     return templates.TemplateResponse("donations/create_donations.html", context)
 
 
-@router.get("/delete_donations", response_class=HTMLResponse)
-async def get_home(request: Request):
-    context = {
-        "request": request,
-        "title": "FastAPI com doações"
-    }
-    return templates.TemplateResponse("donations/delete_donations.html", context)
-
-
 @router.get("/donations_to_admin", response_class=HTMLResponse)
 async def get_home(request: Request):
     context = {
@@ -150,7 +141,6 @@ async def get_home(request: Request):
         "title": "FastAPI com lista de doações"
     }
     return templates.TemplateResponse("donations/donations_to_admin.html", context)
-
 
 # Users
 

@@ -26,3 +26,9 @@ class DonationCreate(BaseModel):
 
     class Config:
         from_attributes = True 
+
+class DonationUpdate(BaseModel):
+    new_amount : float
+
+    class Config:
+        from_attributes = True 

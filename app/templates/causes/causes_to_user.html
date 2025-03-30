@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/user/page_user.css">
     <link rel="stylesheet" href="../static/css/causes/causes.css">
     <link rel="stylesheet" href="../static/css/components/card_causes.css">
     <script src="../static/js/user/page_user.js"></script>
+    <script src="../static/js/user/delete_user.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Wallet4Don8</title>
 </head>
 <body>
@@ -15,11 +18,15 @@
             <img src="../static/images/icon.png" alt="" width="150">
             <ul>
                 <li> <a id="initial-btn">Início</a></li>
-                <li> <a id="donations-btn">Minhas doações</a></li>
+                <li> <a id="donation-btn">Minhas doações</a></li>
                 <li> <a id="dashboard-btn">Dashboard</a></li>
             </ul>
             <div class="button">
-                 <button id="sair">Sair</button>
+                <button class="logout-button" id="button">Usuário</button> 
+                <div class="dropdown-content" id="logout-dropdown">
+                    <a href="#" id="logout-action">Sair</a>
+                    <a href="#" id="delete-user">Deletar Usuário</a>
+                </div>
             </div>
         </nav>
         </header>

@@ -12,6 +12,9 @@ class CauseResponse(BaseModel):
     image_data: Optional[str] 
     fk_user: int  
 
+    class Config :
+        from_attributes = True
+
 
     @field_serializer('image_data')
     def serialize_image(self, image_data: Optional[bytes], _info):
@@ -57,8 +60,7 @@ class CauseCreate(BaseModel):
     image_data: Optional[bytes] = None
 
     class Config:
-        from_attributes = True  
-
+        from_attributes = True
 
 class StatusAmountEnum(str, Enum):
     STORED = 'stored'

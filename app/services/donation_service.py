@@ -1,13 +1,13 @@
 from sqlalchemy.orm import Session
 from app.repositories.donation_repository import DonationRepository
 from app.repositories.cause_repository import CauseRepository
-from app.services.cause_service import CauseService
 from app.schemas import donation_schema
 from app.exceptions.donation_exceptions import (
     donation_value_exception,
     donations_list_empty,
     donation_not_cause,
-    donation_not_found
+    donation_not_found,
+    donation_denied
 )
 
 class DonationService:
@@ -46,11 +46,29 @@ class DonationService:
         return donations
     
     def update_donation(self, donation_id: int, new_amount: float):
-        donation = self.db.query().filter(donation_id == donation_id).first()
+        if new_amount <= 0.0:
+            raise donation_value_exception.DonationValueException()
+
+        donation = self.find_donation_by_id(donation_id)
+        cause = self.cause_repository.find_cause_by_id(donation.fk_cause)  
+
+        if not cause:
+            raise donation_not_cause.DonationNotCause()
+
+        if cause.status_amount == "applied":
+            raise donation_denied.DonationDenied()
         
-        donation.amount = new_amount
-        return self.repository.update_donation(donation_id, new_amount)
-              
+        current_donation_value_brl = self.convert_ether_in_brl(donation.value)
+        new_amount_brl = self.convert_ether_in_brl(new_amount)
+
+        donation.value = new_amount  
+        
+        cause.amount += (new_amount_brl - current_donation_value_brl)
+
+        self.repository.update_donation(donation_id, new_amount)
+        
+        return donation 
+    
 
     def find_all_donations(self):
         donations = self.repository.find_all_donations()

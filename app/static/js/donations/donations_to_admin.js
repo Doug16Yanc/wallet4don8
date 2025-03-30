@@ -1,22 +1,3 @@
-
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("causes-btn").addEventListener("click", function () {
-        window.location.href = "page_causes";
-    })
-})
-
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("donations-btn").addEventListener("click", function () {
-        window.location.href = "page_donations";
-    })
-})
-
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("dashboard-btn").addEventListener("click", function () {
-        window.location.href = "dashboard";
-    })
-})
-
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.querySelector('.box-container');
 

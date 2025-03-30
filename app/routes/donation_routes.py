@@ -12,7 +12,7 @@ def create_donation(
     service: DonationService = Depends(get_donation_service)
 ):
     new_donation = service.create_donation(payload)
-    return {"status": "success", "message": "Doação criada com sucesso!", "donation": new_donation}
+    return new_donation
      
 
 @router.get("/donation/{donation_id}", response_model=donation_schema.DonationResponse)
@@ -34,15 +34,15 @@ def find_user_donations(
     return donations
 
 
-@router.patch("/update_donation/{donation_id}", response_model=donation_schema.DonationResponse)
-def update_donation_status(
+@router.patch("/update_donation/{donation_id}", response_model=donation_schema.DonationUpdate)
+def update_donation(
     donation_id: int,
-    new_amount: float,  
+    request: donation_schema.DonationUpdate,
     service: DonationService = Depends(get_donation_service)
 ):
-    donation = service.update_donation(donation_id, new_amount)
+    updated_donation = service.update_donation(donation_id, request.new_amount)
     
-    return {"status": "success", "message": "Valor da doação atualizado com sucesso!", "donation": donation}
+    return {"new_amount": updated_donation.value}
 
 @router.get("/get_donations", response_model=list[donation_schema.DonationResponse])
 def find_all_donations(service: DonationService = Depends(get_donation_service)):

@@ -109,54 +109,114 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function updateCauseStatus(causeId, amount, token) {
-    if (!confirm('Deseja realmente aplicar este valor?')) return;
-
-    fetch(`http://localhost:8000/causes/update_cause/${causeId}`, {
-        method: 'PATCH',
-        headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            applied_amount: amount 
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            alert('Valor aplicado com sucesso!');
-            window.location.reload();
-        } else {
-            alert('Erro ao aplicar valor: ' + (data.message || ''));
+    Swal.fire({
+        title: "⚠️ Confirmar Aplicação",
+        text: "Deseja realmente aplicar este valor?",
+        icon: "warning",
+        background: "#1E1C1C",
+        color: "#ff8c00",
+        showCancelButton: true,
+        confirmButtonColor: "#F84C0D",
+        cancelButtonColor: "#666",
+        confirmButtonText: "Sim, aplicar!",
+        cancelButtonText: "Cancelar"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`http://localhost:8000/causes/update_cause/${causeId}`, {
+                method: 'PATCH',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    applied_amount: amount 
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => {
+                        throw new Error(err.detail || 'Erro ao aplicar valor');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                Swal.fire({
+                    title: "✅ Valor Aplicado!",
+                    text: "O valor foi aplicado com sucesso!",
+                    icon: "success",
+                    background: "#1E1C1C",
+                    color: "#ff8c00",
+                    confirmButtonColor: "#F84C0D"
+                }).then(() => {
+                    window.location.reload();
+                });
+            })
+            .catch(error => {
+                Swal.fire({
+                    title: "❌ Erro!",
+                    text: error.message,
+                    icon: "error",
+                    background: "#1E1C1C",
+                    color: "#ff8c00",
+                    confirmButtonColor: "#F84C0D"
+                });
+                console.error('Erro ao aplicar valor:', error);
+            });
         }
-    })
-    .catch(error => {
-        console.error('Erro ao aplicar valor:', error);
-        alert('Erro ao aplicar valor. Verifique o console para detalhes.');
     });
 }
 
 function deleteCause(causeId, token) {
-    if (!confirm('Tem certeza que deseja excluir esta causa?')) return;
-
-    fetch(`http://localhost:8000/causes/delete_cause/${causeId}`, {
-        method: 'DELETE',
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
-    })
-    .then(response => {
-        if (response.ok) {
-            alert('Causa excluída com sucesso!');
-            window.location.reload();  
-        } else {
-            response.json().then(data => {
-                alert('Erro ao excluir a causa: ' + (data.message || ''));
+    Swal.fire({
+        title: "🗑️ Confirmar Exclusão",
+        text: "Tem certeza que deseja excluir esta causa? Essa ação não pode ser desfeita.",
+        icon: "warning",
+        background: "#1E1C1C",
+        color: "#fff",
+        showCancelButton: true,
+        confirmButtonText: "Sim, excluir!",
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#F84C0D",
+        cancelButtonColor: "#666"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`http://localhost:8000/causes/delete_cause/${causeId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    Swal.fire({
+                        title: "✅ Excluído!",
+                        text: "Causa removida com sucesso.",
+                        icon: "success",
+                        background: "#1a1a1a",
+                        color: "#ff8c00",
+                        confirmButtonColor: "#ff8c00"
+                    }).then(() => {
+                        window.location.reload();
+                    });
+                } else {
+                    return response.json().then(err => {
+                        throw new Error(err.detail || 'Erro ao excluir causa');
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    title: "❌ Erro!",
+                    text: error.message,
+                    icon: "error",
+                    background: "#1a1a1a",
+                    color: "#ff8c00",
+                    confirmButtonColor: "#ff8c00"
+                });
+                console.error('Erro ao excluir causa:', error);
             });
         }
-    })
-    .catch(error => {
-        console.error('Erro ao excluir a causa:', error);
-        alert('Erro ao excluir a causa. Verifique o console para detalhes.');
     });
 }

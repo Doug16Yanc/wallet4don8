@@ -1,5 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, Response
-from sqlalchemy.exc import IntegrityError
+from fastapi import APIRouter, Depends, status, Response
 from app.schemas import cause_schema
 from app.services.cause_service import CauseService
 from app.dependencies.cause_dependencies import get_cause_service
@@ -17,9 +16,8 @@ def create_cause(
     service: CauseService = Depends(get_cause_service)
 ):
     new_cause = service.create_cause(payload)
-    return {"status": "success", "message": "Causa criada com sucesso!", "cause": new_cause}
+    return new_cause
    
-
 @router.get("/cause/{cause_name}")
 def find_cause_by_name(
     cause_name: str,

@@ -41,7 +41,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch('http://0.0.0.0:8000/donations/create_donation', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${sessionStorage.getItem('access_token')}` 
                 },
                 body: JSON.stringify(formData)
             });

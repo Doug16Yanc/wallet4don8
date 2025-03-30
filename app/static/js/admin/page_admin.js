@@ -1,8 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("sair").addEventListener("click", function () {
+        localStorage.removeItem("token");
+        sessionStorage.removeItem("token");
         window.location.href = "templates";
     });
 });
+
 
 document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("initial-btn").addEventListener("click", function () {
