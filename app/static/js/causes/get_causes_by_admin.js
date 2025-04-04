@@ -101,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => {
             console.error('Erro ao buscar causas:', error);
-            alert('Erro ao buscar causas. Verifique o console para mais detalhes.');
         });
     } else {
         console.error('Elemento .box-container não encontrado.');
