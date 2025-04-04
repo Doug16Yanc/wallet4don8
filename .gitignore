@@ -20,9 +20,3 @@ postgres-db/
 logs/
 *.log
 
-.env
-.env.local
-.env.*.local
-*.pem
-*.key
-*.crt
