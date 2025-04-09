@@ -37,50 +37,51 @@ document.addEventListener('DOMContentLoaded', () => {
             fk_user: parseInt(sessionStorage.getItem('user_id'), 10)
         };
 
-        try {
-            const response = await fetch('http://0.0.0.0:8000/donations/create_donation', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${sessionStorage.getItem('access_token')}` 
-                },
-                body: JSON.stringify(formData)
-            });
 
-            if (response.ok) {
-                const result = await response.json();
-                Swal.fire({
-                    title: "✅ Sucesso!",
-                    text: "Doação criada com sucesso!",
-                    icon: "success",
-                    background: "#1E1C1C",
-                    color: "#ff8c00",
-                    confirmButtonColor: "#F84C0D"
-                });
-                console.log(result);
-            } else {
-                const error = await response.json();
-                Swal.fire({
-                    title: "❌ Erro!",
-                    text: "Erro ao criar doação: " + error.detail,
-                    icon: "error",
-                    background: "#1E1C1C",
-                    color: "#ff8c00",
-                    confirmButtonColor: "#F84C0D"
-                });
-                console.error(error);
-            }
-        } catch (err) {
+        const response = await fetch('http://0.0.0.0:8000/donations/create_donation', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${sessionStorage.getItem('access_token')}` 
+            },
+            body: JSON.stringify(formData)
+        });
+
+        if (response.ok) {
+            const result = await response.json();
             Swal.fire({
-                title: "❌ Erro inesperado!",
-                text: "Um erro inesperado aconteceu.",
+                title: "✅ Sucesso!",
+                text: "Doação criada com sucesso!",
+                icon: "success",
+                background: "#1E1C1C",
+                color: "#ff8c00",
+                confirmButtonColor: "#F84C0D"
+            }).then(() => {
+                window.location.href = "page_causes";
+            });
+        } else {
+            const error = await response.json();
+            Swal.fire({
+                title: "❌ Erro!",
+                text: "Erro ao criar doação: " + error.detail,
                 icon: "error",
                 background: "#1E1C1C",
                 color: "#ff8c00",
                 confirmButtonColor: "#F84C0D"
             });
-            console.error(err);
+            console.error(error);
         }
+    /*catch (err) {
+        Swal.fire({
+            title: "❌ Erro inesperado!",
+            text: "Um erro inesperado aconteceu.",
+            icon: "error",
+            background: "#1E1C1C",
+            color: "#ff8c00",
+            confirmButtonColor: "#F84C0D"
+        });
+        console.error(err);
+    } */
     });
 });
 

@@ -124,6 +124,7 @@ function updateDonation(donationId) {
         }
     });
 }
+
 function deleteDonation(donationId) {
     Swal.fire({
         title: "🗑️ Confirmar Exclusão",
@@ -150,19 +151,17 @@ function deleteDonation(donationId) {
                         throw new Error(err.detail || "Erro ao excluir doação");
                     });
                 }
-                return response.json();
             })
             .then(data => {
                 Swal.fire({
                     title: "✅ Excluído!",
-                    text: data.message || "A doação foi removida com sucesso.",
+                    text: "A doação foi removida com sucesso.",
                     icon: "success",
                     background: "#1a1a1a",
                     color: "#ff8c00",
                     confirmButtonColor: "#ff8c00",
-                    willClose: () => {
-                        window.location.reload();
-                    }
+                }).then(() => {
+                    window.location.reload();
                 });
             })
             .catch(error => {
